@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
       ),
       body: new Center(
         child: new RaisedButton(
-          onPressed: showNotification,
+          onPressed: show,
           child: new Text(
             'Demo',
             style: Theme.of(context).textTheme.headline,
@@ -50,6 +50,27 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
+  }
+
+  show() async{
+    var time = new Time(13, 56, 0);
+    var androidPlatformChannelSpecifics =
+    new AndroidNotificationDetails('repeatDailyAtTime channel id',
+        'repeatDailyAtTime channel name', 'repeatDailyAtTime description');
+    var iOSPlatformChannelSpecifics =
+    new IOSNotificationDetails();
+    var platformChannelSpecifics = new NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.showDailyAtTime(
+        0,
+        'show daily title',
+        'Daily notification shown at approximately',
+        time,
+        platformChannelSpecifics);
+  }
+
+  String _toTwoDigitString(int value) {
+    return value.toString().padLeft(2, '0');
   }
 
   showNotification() async {
